@@ -68,7 +68,7 @@ print(gesspass_str)
 print(password)'''
 
 ####### advanced #########
-import string
+'''import string
 import random
 import itertools
 num= str(1234567890)
@@ -86,3 +86,67 @@ for s in itertools.product(letras, repeat=k):
     if password == gesspass:
         break
 print('You guess')
+'''
+##### Expert ######## 
+'''import string
+import threading 
+import random
+import itertools
+import concurrent.futures
+import logging
+
+
+
+
+def brute_force():
+    letras=string.printable
+
+    k=int(input('inserir numero de carateres \n'))
+
+    password="".join(random.sample(letras,k))
+    print(password)
+
+    for s in itertools.product(letras, repeat=k):
+        #print("".join(s))
+        gesspass="".join(s)
+        if password == gesspass:
+            break
+    print('You guess')
+
+if __name__ == "__main__":
+    format = "%(asctime)s: %(message)s"
+    logging.basicConfig(format=format, level=logging.INFO,
+                        datefmt="%H:%M:%S")
+
+    with concurrent.futures.ThreadPoolExecutor(max_workers=3) as executor:
+        executor.map(brute_force, range(3))'''
+
+import logging
+import string
+import random
+import itertools
+import threading
+import time
+import concurrent.futures
+
+
+def brute_force(k):
+    t=time.time()
+    letras=string.printable
+    password="".join(random.sample(letras,k))
+    print(password)
+    #print(letras)
+
+    for s in itertools.product(letras, repeat=k):
+        #print("".join(s))
+        gesspass="".join(s)
+        if password == gesspass:
+            break
+    print('Password: ' + password + ' Gesspass= '+ gesspass)
+    print('Time Usage: '+ str(time.time()-t) + 's')
+
+if __name__ == "__main__":
+    N_t=int(input('insert number of threads \n'))
+    k=int(input('insert number of caraters \n'))
+    with concurrent.futures.ThreadPoolExecutor(max_workers=N_t) as executor:
+        executor.map(brute_force(k), range(N_t))
